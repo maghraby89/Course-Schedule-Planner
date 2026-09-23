@@ -1,6 +1,9 @@
 package com.ashraf.courseschedule;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -101,6 +104,15 @@ public class MainActivity extends Activity {
         @JavascriptInterface
         public String deviceId() {
             return Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        }
+
+        @JavascriptInterface
+        public void copyText(String text) {
+            if (text == null) return;
+            runOnUiThread(() -> {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setPrimaryClip(ClipData.newPlainText("Group message", text));
+            });
         }
 
         @JavascriptInterface
