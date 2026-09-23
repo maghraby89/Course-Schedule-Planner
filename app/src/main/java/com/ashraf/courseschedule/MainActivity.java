@@ -102,6 +102,19 @@ public class MainActivity extends Activity {
         public String deviceId() {
             return Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         }
+
+        @JavascriptInterface
+        public void openExternal(String url) {
+            if (url == null || url.trim().isEmpty()) return;
+            runOnUiThread(() -> {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Unable to open link", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
